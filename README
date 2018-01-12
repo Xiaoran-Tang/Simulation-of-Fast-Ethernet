@@ -1,0 +1,23 @@
+QUICK AND DIRTY
+===============
+
+Execute the following from the proj_Tang/ directory:
+
+    ./configure
+
+    cd lib         # build the basic library that all programs need
+    make           # use "gmake" everywhere on BSD/OS systems
+
+    cd ../libfree  # continue building the basic library
+    make
+
+    cd ../fast_eth # build and test a basic client program
+    make
+    
+    ./csp > CSP_log.txt
+    ./sp 127.0.0.1 9 > SP9_log.txt
+    ./sp 127.0.0.1 7 > SP7_log.txt
+
+If all that works, you're all set to test my Fast Ethernet program.
+Sample inputs are shown in proj_Tang/fast_eth/input_test#.txt
+
