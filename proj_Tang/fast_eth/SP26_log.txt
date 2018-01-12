@@ -1,0 +1,11 @@
+This Station Process is SP26
+Receive (via CSP) a data frame 1 from SP 7
+Send request to CSP to send data frame 1 to SP 5
+Receive positive reply (permission) from CSP to send data frame 1 to SP 5
+Send (via CSP) data frame 1 to SP 5
+Send request to CSP to send data frame 2 to SP 7
+Receive positive reply (permission) from CSP to send data frame 2 to SP 7
+Send (via CSP) data frame 2 to SP 7
+Send request to CSP to send data frame 3 to SP 5
+Receive positive reply (permission) from CSP to send data frame 3 to SP 5
+Send (via CSP) data frame 3 to SP 5

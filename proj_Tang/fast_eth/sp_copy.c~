@@ -1,0 +1,159 @@
+// Station Process
+
+//#include <time.h>
+#include "unp.h"
+
+void
+str_cli_(FILE *fp, int sockfd, int sp_no);
+
+int
+main(int argc, char **argv)
+{
+   //sleep(5);
+   int                  sockfd;
+   struct sockaddr_in   servaddr;
+   int                  sp_no = atoi(argv[2]);
+   printf("This Station Process is SP%d\n", sp_no);
+   
+   if (argc != 3)
+      err_quit("usage: sp <IPaddress> SP_No");
+
+   sockfd = Socket(AF_INET, SOCK_STREAM, 0);
+
+   bzero(&servaddr, sizeof(servaddr));
+   servaddr.sin_family = AF_INET;
+   //servaddr.sin_port = htons(SERV_PORT);
+   servaddr.sin_port        = htons(8888);
+   Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
+
+   Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
+
+   str_cli_(stdin, sockfd, sp_no);    /* do it all */
+
+   exit(0);
+}
+
+void
+str_cli_(FILE *fp, int sockfd, int sp_no)
+{
+   int         maxfdp1, stdineof, fileineof;
+   fd_set      rset;
+   char        buf[MAXLINE];
+   //char        temp1[20], temp2[20], temp3[20], temp4[20];
+   int         n;
+   
+   // the frame has fixed size (4 * 3 + 10 = 22 bytes)
+   struct frame {
+      int   seq;        // sequence number
+      int   src;        // source address
+      int   dest;       // destination address
+      char  data[10];   // data section
+   };
+   struct frame         send, rcev;        // send and receive
+   
+   //stdineof = 0;
+   fileineof = 0;
+   send.src = sp_no;    // the source address is fixed for a certain SP
+   FD_ZERO(&rset);
+     
+   // read from simulation input data files
+   sprintf(buf, "input%d.txt", sp_no);
+   FILE *in = fopen(buf, "r");
+   if (in == NULL)
+   {
+       printf("Error opening file!\n");
+       exit(1);
+   }
+   
+   /*
+   // print out current command for SP
+   //n = Readline(fileno(in), buf, MAXLINE);
+   Write(fileno(stdout), buf, n);
+   if (sscanf(buf, "%s %s %s %s %d", 
+       temp1, temp2, temp3, temp4, &send.dest) != 5) {
+      printf("invalid input: %s", buf);
+   }
+   
+   // read out the info in current command
+   send.seq = atoi(temp2);
+   sprintf(temp2, "sequence number: %d\n", send.seq);
+   Write(fileno(stdout), temp2, 20);
+   sprintf(temp2, "dest address: %d\n", send.dest);
+   Write(fileno(stdout), temp2, 17);
+   */
+   
+   // write to log 
+   sprintf(buf, "log%d.txt", sp_no);
+   FILE *log = fopen("log.txt", "w");
+   if (log == NULL)
+   {
+       printf("Error opening file!\n");
+       exit(1);
+   }
+   
+   for ( ; ; ) {
+      if (fileineof == 0)
+         FD_SET(fileno(in), &rset);
+      FD_SET(sockfd, &rset);
+      maxfdp1 = max(fileno(in), sockfd) + 1;
+      Select(maxfdp1, &rset, NULL, NULL, NULL);
+
+      if (FD_ISSET(sockfd, &rset)) {	/* socket is readable */
+         if ( (n = Read(sockfd, &rcev, MAXLINE)) == 0) {
+            if (fileineof == 1)
+               return;      /* normal termination */
+            else
+               err_quit("str_cli: server terminated prematurely");
+         }
+         sprintf(buf, "Receive frame %d from SP%d to SP%d\n\n", 
+                 rcev.seq, rcev.src, rcev.dest);
+         Write(fileno(stdout), buf, n);
+         Write(fileno(log), buf, n);
+      }
+      
+      if (FD_ISSET(fileno(fp), &rset)) {  // input is readable 
+         if ( (n = Read(fileno(fp), buf, MAXLINE)) == 0) {
+            stdineof = 1;
+            Shutdown(sockfd, SHUT_WR);	// send FIN 
+            FD_CLR(fileno(fp), &rset);
+            continue;
+         }
+
+         if (sscanf(buf, "%d %d %d", &send.seq, &send.src, &send.dest) != 3) {
+            printf("invalid input: %s", buf);
+            continue;
+         }
+         Writen(sockfd, &send, sizeof(send));
+      }
+      
+      /*
+      if (FD_ISSET(fileno(in), &rset)) {  // file is readable 
+         if ( (n = Readline(fileno(in), buf, MAXLINE)) == 0) {
+            fileineof = 1;
+            Shutdown(sockfd, SHUT_WR);	// send FIN 
+            FD_CLR(fileno(in), &rset);
+            continue;
+         }
+
+         // print out current command for SP
+         //n = Readline(fileno(in), buf, MAXLINE);
+         printf("\n");
+         Write(fileno(stdout), buf, n);
+         if (sscanf(buf, "%s %s %s %s %d", 
+             temp1, temp2, temp3, temp4, &send.dest) != 5) {
+            printf("invalid input: %s", buf);
+         }
+         
+         // read out the info in current command
+         send.seq = atoi(temp2);
+         sprintf(temp2, "sequence number: %d\n", send.seq);
+         Write(fileno(stdout), temp2, 20);
+         sprintf(temp2, "dest address: %d\n", send.dest);
+         Write(fileno(stdout), temp2, 17);
+         
+         Writen(sockfd, &send, sizeof(send));
+      }
+      */
+   }
+   fclose(log);
+}

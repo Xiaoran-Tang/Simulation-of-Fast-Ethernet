@@ -1,0 +1,23 @@
+This Station Process is SP7
+Receive (via CSP) a data frame 1 from SP 5
+Send request to CSP to send data frame 1 to SP 26
+Receive positive reply (permission) from CSP to send data frame 1 to SP 26
+Send (via CSP) data frame 1 to SP 26
+Send request to CSP to send data frame 2 to SP 14
+Receive reject reply from CSP to send data frame 2 to SP 14
+Retransmit request to CSP to send data frame 2 to SP 14 (count: 1)
+Receive reject reply from CSP to send data frame 2 to SP 14
+Retransmit request to CSP to send data frame 2 to SP 14 (count: 2)
+Receive reject reply from CSP to send data frame 2 to SP 14
+Retransmit request to CSP to send data frame 2 to SP 14 (count: 3)
+Send request to CSP to send data frame 3 to SP 5
+Receive positive reply (permission) from CSP to send data frame 3 to SP 5
+Send (via CSP) data frame 3 to SP 5
+Receive (via CSP) a data frame 2 from SP 26
+Send request to CSP to send data frame 4 to SP 5
+Receive reject reply from CSP to send data frame 4 to SP 5
+Retransmit request to CSP to send data frame 4 to SP 5 (count: 1)
+Receive reject reply from CSP to send data frame 4 to SP 5
+Retransmit request to CSP to send data frame 4 to SP 5 (count: 2)
+Receive reject reply from CSP to send data frame 4 to SP 5
+Retransmit request to CSP to send data frame 4 to SP 5 (count: 3)

@@ -1,0 +1,8 @@
+Send request to CSP to send data frame 1 to SP 7
+This Station Process is SP9
+Receive reject reply from CSP to send data frame 1 to SP 7
+Retransmit request to CSP to send data frame 1 to SP 7 (count: 1)
+Receive reject reply from CSP to send data frame 1 to SP 7
+Retransmit request to CSP to send data frame 1 to SP 7 (count: 2)
+Receive reject reply from CSP to send data frame 1 to SP 7
+Retransmit request to CSP to send data frame 1 to SP 7 (count: 3)

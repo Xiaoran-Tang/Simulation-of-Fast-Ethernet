@@ -1,0 +1,43 @@
+new connection from SP5: 127.0.0.1, port 40992
+new connection from SP7: 127.0.0.1, port 40994
+new connection from SP26: 127.0.0.1, port 40996
+Receive request from SP 5
+Send postive reply to SP 7
+Receive data frame 1 from SP 5 (to SP 7)
+Forward data frame 1 (from SP 5) to SP 7
+Receive request from SP 7
+Send postive reply to SP 26
+Receive data frame 1 from SP 7 (to SP 26)
+Forward data frame 1 (from SP 7) to SP 26
+Receive request from SP 7
+Send negative reply to SP 14
+Receive request from SP 7
+Send negative reply to SP 14
+Receive request from SP 7
+Send negative reply to SP 14
+Receive request from SP 7
+Send negative reply to SP 14
+Receive request from SP 7
+Send postive reply to SP 5
+Receive data frame 3 from SP 7 (to SP 5)
+Forward data frame 3 (from SP 7) to SP 5
+Receive request from SP 26
+Send postive reply to SP 5
+Receive data frame 1 from SP 26 (to SP 5)
+Forward data frame 1 (from SP 26) to SP 5
+Receive request from SP 26
+Send postive reply to SP 7
+Receive data frame 2 from SP 26 (to SP 7)
+Forward data frame 2 (from SP 26) to SP 7
+Receive request from SP 26
+Send postive reply to SP 5
+Receive data frame 3 from SP 26 (to SP 5)
+Forward data frame 3 (from SP 26) to SP 5
+Receive request from SP 7
+Send negative reply to SP 5
+Receive request from SP 7
+Send negative reply to SP 5
+Receive request from SP 7
+Send negative reply to SP 5
+Receive request from SP 7
+Send negative reply to SP 5
